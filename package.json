@@ -2,7 +2,7 @@
   "name": "discordbot",
   "version": "1.0.0",
   "description": "Is a discord bot",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
+    "@types/node": "^14.0.27",
     "bufferutil": "^4.0.1",
     "discord.js": "^12.2.0",
-    "nodemon": "^2.0.4"
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4",
+    "typescript": "^3.9.7"
   }
 }

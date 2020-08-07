@@ -1,16 +1,19 @@
-const Discord = require('discord.js');
+require('dotenv').config();
+
+import * as Discord from 'discord.js';
+
 const client = new Discord.Client();
 
-let voiceConnection;
+let voiceConnection: Discord.VoiceConnection;
 
 // First, let's register a termination handler so we can tidy up after ourselves:
 process.on('SIGINT', () => {
-  console.log('Termination requested, logging out...');
+  console.log('\nTermination requested, logging out...\n');
   client.destroy();
   process.exit();
 });
 
-const onNewVoiceConnection = connection => {
+const onNewVoiceConnection = (connection: Discord.VoiceConnection) => {
   voiceConnection = connection;
 
   connection.voice.setSelfMute(true);
@@ -22,13 +25,11 @@ const onNewVoiceConnection = connection => {
 }
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}`);
+  if (client.user) {
+    console.log(`Logged in as ${client.user.tag}`);
+  }
+
   // TODO: Find out if I am in voice channel and join it
-});
-
-// Ping
-client.on('message', msg => {
-
 });
 
 // Some helpers to get useful info
@@ -39,7 +40,7 @@ client.on('message', message => {
     message.reply(message.author.displayAvatarURL());
   } else if (message.content === 'what is my id') {
     message.reply(message.author.id);
-  } else if (message.content.toLowerCase().startsWith('ping')) {
+  } else if (message.content.toLowerCase().includes('ping')) {
     console.log(`pinged, sending pong to ${message.author.username}`);
     message.reply('pong');
   }
@@ -47,6 +48,8 @@ client.on('message', message => {
 
 client.on('voiceStateUpdate', (oldState, newState) => {
   console.log('voiceStateUpdate');
+
+  if (!newState.member) return;
 
   if (newState.member.id === '179233155973120001') {
     console.log('OMG ITS BEN!');
@@ -56,7 +59,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
       return;
     }
 
-    if (voiceConnection && voiceConnection.channelID !== newState.channelID) {
+    if (voiceConnection && voiceConnection.channel.id !== newState.channelID) {
       voiceConnection.disconnect();
     }
 
@@ -79,4 +82,9 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   // basically everything in newState needs to be pushed to FE
 });
 
-client.login('NzQwNDg0Mjc2OTc3NDAxODU3.XypruQ.PpE6R7_4HH3GhHHD3ptkZP_A3wo');
+if (process.env.DISCORD_TOKEN) {
+  client.login(process.env.DISCORD_TOKEN);
+} else {
+  console.warn("You must provide a .env file containing DISCORD_TOKEN to use the bot");
+}
+
