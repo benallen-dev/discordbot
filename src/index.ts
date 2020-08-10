@@ -1,12 +1,19 @@
 require('dotenv').config();
-
 import * as Discord from 'discord.js';
+import express from 'express';
+import http from 'http';
+import socketio from 'socket.io';
 
-// const clientOptions: Discord.ClientOptions = {
-//   ws: {
-//     intents: [Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_VOICE_STATES]
-//   }
-// }
+// const express = require('express');
+const app = express();
+const httpServer = new http.Server(app);
+const io = new socketio(httpServer);
+
+app.use(express.static('public'));
+
+httpServer.listen(3000, function () {
+	console.log('listening on *:3000');
+});
 
 const client = new Discord.Client();
 let voiceConnection: Discord.VoiceConnection;
@@ -46,17 +53,13 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
   }
 
-  const fetchedUser = await client.users.fetch(config.userId);
-
-  console.log({ fetchedUser });
-
-  // const guilds = client.guilds;
-  // const channels = guilds.cache.map(guild => guild.channels).filter();
-  // console.log(channels);
+  // const fetchedUser = await client.users.fetch(config.userId);
 
   const channels = client.channels;
   const voiceChannels = channels.cache.filter(channel => channel.type === 'voice');
   console.log(voiceChannels);
+
+  debugger;
 });
 
 // Some helpers to get useful info

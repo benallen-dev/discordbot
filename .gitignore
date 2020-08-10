@@ -105,3 +105,6 @@ dist
 
 # TS Build dir
 build
+
+# http serve dir
+public
