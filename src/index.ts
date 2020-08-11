@@ -4,7 +4,8 @@ import * as Discord from 'discord.js';
 import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
-import open from 'open';
+
+const open = require('open');
 
 const app = express();
 const httpServer = new http.Server(app);
