@@ -1,10 +1,11 @@
 require('dotenv').config();
+
 import * as Discord from 'discord.js';
 import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
+import open from 'open';
 
-// const express = require('express');
 const app = express();
 const httpServer = new http.Server(app);
 const io = new socketio(httpServer);
@@ -14,6 +15,10 @@ app.use(express.static('public'));
 httpServer.listen(3000, function () {
 	console.log('listening on *:3000');
 });
+
+httpServer.on('listening', async () => {
+  await open('http://localhost:3000', { app: ['chromium-browser', '--kiosk']})
+})
 
 const client = new Discord.Client();
 let voiceConnection: Discord.VoiceConnection;
