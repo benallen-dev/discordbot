@@ -17,7 +17,7 @@ httpServer.listen(3000, function () {
 });
 
 httpServer.on('listening', async () => {
-  await open('http://localhost:3000', { app: ['chromium-browser', '--kiosk']})
+  await open('http://localhost:3000', { app: ['chromium-browser', '--start-fullscreen']})
 })
 
 const client = new Discord.Client();
