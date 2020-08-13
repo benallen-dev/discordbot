@@ -1,6 +1,6 @@
 import * as Discord from 'discord.js';
 
-export const channelToUserList = (channel: Discord.VoiceChannel) => channel.members.map(
+export const channelToUserList = (channel: Discord.VoiceChannel) => channel.members.filter(member => !member.user.bot).map(
   member => ({
     id:           member.id,
     avatarUrl:    member.user.displayAvatarURL(),
@@ -11,7 +11,7 @@ export const channelToUserList = (channel: Discord.VoiceChannel) => channel.memb
   })
 );
 
-export const addSpeakingInfo = (channel: Discord.VoiceChannel, speakerId: string, speaking?: boolean) => channel.members.map(
+export const addSpeakingInfo = (channel: Discord.VoiceChannel, speakerId: string, speaking?: boolean) => channel.members.filter(member => !member.user.bot).map(
   member => ({
     id:           member.id,
     avatarUrl:    member.user.displayAvatarURL(),

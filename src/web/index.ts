@@ -18,7 +18,7 @@ export const startWebserver = (config: WebserverConfig ) => {
   const httpServer = new http.Server(app);
   const io = new socketio(httpServer);
 
-  app.use(express.static('public'));
+  app.use(express.static('./public'));
 
   httpServer.listen(port, async () => {
     console.log(`Listening on *:${port}`);
